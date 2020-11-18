@@ -25,7 +25,7 @@
 
     <groupId>org.tallison.xmp</groupId>
     <artifactId>xmpcore-shaded</artifactId>
-    <version>6.1.10</version>
+    <version>6.1.11</version>
 
     <name>XMPCore Shaded</name>
     <description>This project shades Adobe's xmpcore to remove the *.internal.* component from name spaces
@@ -44,8 +44,8 @@
 
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <name>BSD 3 Clause</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -61,16 +61,12 @@
         <dependency>
             <groupId>com.adobe.xmp</groupId>
             <artifactId>xmpcore</artifactId>
-            <version>6.1.10</version>
+            <version>6.1.11</version>
         </dependency>
     </dependencies>
     <distributionManagement>
-        <!-- <snapshotRepository>
-             <id>sonatype-nexus-staging</id>
-             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-         </snapshotRepository> -->
         <repository>
-            <id>sonatype-nexus-staging</id>
+            <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -80,7 +76,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -97,6 +93,20 @@
                                     <shadedPattern>com.adobe</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>META-INF/LICENSE</resource>
+                                    <file>target/classes/META-INF/LICENSE</file>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
@@ -132,7 +142,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -140,7 +150,6 @@
                             <goal>jar</goal>
                         </goals>
                     </execution>
-
                 </executions>
             </plugin>
             <plugin>
@@ -156,9 +165,7 @@
             </plugin>
         </plugins>
     </build>
-
     <profiles>
     </profiles>
-
 </project>
 
